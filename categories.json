@@ -1,0 +1,153 @@
+[
+    {
+      "name": "Accommodations & Hotels",
+      "icon": "fa-hotel",
+      "sub_categories": [
+        {"name": "Hotels", "icon": "fa-h-square"},
+        {"name": "Resorts", "icon": "fa-umbrella-beach"},
+        {"name": "Suites", "icon": "fa-door-open"},
+        {"name": "Pension Houses", "icon": "fa-bed"},
+        {"name": "Hostels", "icon": "fa-users"},
+        {"name": "Guest Houses", "icon": "fa-home"},
+        {"name": "Inns", "icon": "fa-night-sky"}
+      ]
+    },
+    {
+      "name": "Automotive",
+      "icon": "fa-car",
+      "sub_categories": [
+        {"name": "Maintenance & Repair", "icon": "fa-tools"},
+        {"name": "Bikes & Spare Parts", "icon": "fa-bicycle"},
+        {"name": "Car Sales", "icon": "fa-tags"},
+        {"name": "Car Rentals", "icon": "fa-key"},
+        {"name": "Motorbike Rentals", "icon": "fa-motorcycle"},
+        {"name": "Car Accessories", "icon": "fa-puzzle-piece"},
+        {"name": "Washing & Polishing", "icon": "fa-soap"},
+        {"name": "Gasoline Stations", "icon": "fa-gas-pump"},
+        {"name": "Motorcycle Sales", "icon": "fa-motorcycle"}
+      ]
+    },
+    {
+      "name": "Banking & Finance",
+      "icon": "fa-university",
+      "sub_categories": [
+        {"name": "Banks", "icon": "fa-piggy-bank"},
+        {"name": "Money Exchange", "icon": "fa-coins"},
+        {"name": "Money Transfer", "icon": "fa-exchange-alt"},
+        {"name": "Travellers Cheques", "icon": "fa-money-check-alt"}
+      ]
+    },
+    {
+      "name": "Beauty & Wellness",
+      "icon": "fa-spa",
+      "sub_categories": [
+        {"name": "Beauty Salons", "icon": "fa-cut"},
+        {"name": "Cosmetic Surgery", "icon": "fa-pills"},
+        {"name": "Cosmetics & Personal Care", "icon": "fa-sparkles"},
+        {"name": "Optical & Lenses", "icon": "fa-glasses"},
+        {"name": "Saunas & Spas", "icon": "fa-hot-tub"}
+      ]
+    },
+    {
+      "name": "Business & Companies",
+      "icon": "fa-briefcase",
+      "sub_categories": [
+        {"name": "Accountants", "icon": "fa-calculator"},
+        {"name": "Advertising & Marketing", "icon": "fa-ad"},
+        {"name": "Agricultural Development", "icon": "fa-leaf"},
+        {"name": "Architectural Services", "icon": "fa-drafting-table"},
+        {"name": "Call Centers & BPO", "icon": "fa-headset"},
+        {"name": "Computer Programming", "icon": "fa-code"},
+        {"name": "Engineering & Contractors", "icon": "fa-hard-hat"},
+        {"name": "Funeral Services", "icon": "fa-monument"},
+        {"name": "Internet Providers", "icon": "fa-wifi"},
+        {"name": "Law Offices", "icon": "fa-gavel"},
+        {"name": "Laundry & Dry Cleaners", "icon": "fa-tshirt"},
+        {"name": "Water Suppliers", "icon": "fa-tint"}
+      ]
+    },
+    {
+      "name": "Education & Training",
+      "icon": "fa-graduation-cap",
+      "sub_categories": [
+        {"name": "Computer Schools", "icon": "fa-laptop-code"},
+        {"name": "Graphic Design", "icon": "fa-palette"},
+        {"name": "Driving Schools", "icon": "fa-car-side"},
+        {"name": "Health Education", "icon": "fa-medkit"},
+        {"name": "Kindergartens", "icon": "fa-child"},
+        {"name": "Private & Public Schools", "icon": "fa-school"},
+        {"name": "Universities", "icon": "fa-university"}
+      ]
+    },
+    {
+      "name": "Entertainments",
+      "icon": "fa-ticket-alt",
+      "sub_categories": [
+        {"name": "Bars & Pubs", "icon": "fa-beer"},
+        {"name": "Boat Excursions", "icon": "fa-ship"},
+        {"name": "Casinos", "icon": "fa-dice"},
+        {"name": "Cinemas", "icon": "fa-film"},
+        {"name": "Event Management", "icon": "fa-calendar-star"},
+        {"name": "Golf Clubs", "icon": "fa-golf-ball"},
+        {"name": "Night Clubs", "icon": "fa-glass-cheers"},
+        {"name": "Shopping Centres", "icon": "fa-shopping-cart"}
+      ]
+    },
+    {
+      "name": "Government & Community",
+      "icon": "fa-landmark",
+      "sub_categories": [
+        {"name": "Fire Stations", "icon": "fa-fire-extinguisher"},
+        {"name": "Police Stations", "icon": "fa-shield-alt"},
+        {"name": "LTO", "icon": "fa-id-card"},
+        {"name": "Mayor's Office", "icon": "fa-building"},
+        {"name": "Public Services", "icon": "fa-users-cog"}
+      ]
+    },
+    {
+      "name": "Health & Medicine",
+      "icon": "fa-hospital-symbol",
+      "sub_categories": [
+        {"name": "Medical Clinics", "icon": "fa-user-md"},
+        {"name": "Dental Clinics", "icon": "fa-tooth"},
+        {"name": "Psychologists & Psychiatrists", "icon": "fa-brain"},
+        {"name": "Specialists (Cardio/Derm/Gastro)", "icon": "fa-stethoscope"},
+        {"name": "Blood Banks", "icon": "fa-tint"},
+        {"name": "Emergency Services", "icon": "fa-ambulance"}
+      ]
+    },
+    {
+      "name": "Restaurants & Bars",
+      "icon": "fa-utensils",
+      "sub_categories": [
+        {"name": "Asian & Filipino", "icon": "fa-bowl-rice"},
+        {"name": "BBQ & Grill", "icon": "fa-fire"},
+        {"name": "Cafés & Coffee Shops", "icon": "fa-coffee"},
+        {"name": "Fast Food", "icon": "fa-hamburger"},
+        {"name": "International Cuisine", "icon": "fa-globe"},
+        {"name": "Halal Restaurants", "icon": "fa-star-and-crescent"}
+      ]
+    },
+    {
+      "name": "Shipping & Transport",
+      "icon": "fa-shuttle-van",
+      "sub_categories": [
+        {"name": "Airlines & Aviation", "icon": "fa-plane"},
+        {"name": "Cargo & Transit", "icon": "fa-truck-loading"},
+        {"name": "Courier Services", "icon": "fa-box-open"},
+        {"name": "Ferry & Shipping Lines", "icon": "fa-ship"},
+        {"name": "Travel & Visa Services", "icon": "fa-passport"}
+      ]
+    },
+    {
+      "name": "Shopping",
+      "icon": "fa-shopping-bag",
+      "sub_categories": [
+        {"name": "Clothing & Fashion", "icon": "fa-tshirt"},
+        {"name": "Gadgets & Computers", "icon": "fa-laptop"},
+        {"name": "Hardware Stores", "icon": "fa-hammer"},
+        {"name": "Markets & Shops", "icon": "fa-store"},
+        {"name": "Toys & Flower Shops", "icon": "fa-gift"}
+      ]
+    }
+  ]
