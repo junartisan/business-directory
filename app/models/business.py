@@ -17,6 +17,12 @@ class UserRole(str, enum.Enum):
     OWNER = "owner"
     ADMIN = "admin"
 
+class ReviewStatus(enum.Enum):
+    PENDING = "pending"
+    APPROVED = "approved"
+    REJECTED = "rejected"
+    FLAGGED = "flagged"
+
 # --- MODELS ---
 
 class User(Base):
@@ -29,15 +35,28 @@ class User(Base):
     role = Column(Enum(UserRole), default=UserRole.CONSUMER)
     
     is_identity_verified = Column(Boolean, default=False)
-    is_active = Column(Boolean, default=True) # Used for Admin "Blocking"
-    deleted_at = Column(DateTime, nullable=True) # Used for User "Soft Delete"
+    is_active = Column(Boolean, default=True) 
+    deleted_at = Column(DateTime, nullable=True) 
     
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    # Relationships
+    # --- UPDATED RELATIONSHIPS ---
     owned_businesses = relationship("Business", back_populates="owner")
-    reviews = relationship("Review", back_populates="user")
+    
+    # We specify foreign_keys here so SQLAlchemy knows which ID connects a user to their reviews
+    reviews = relationship(
+        "Review", 
+        back_populates="user", 
+        foreign_keys="Review.user_id"
+    )
+    
+    # New relationship for admins to see what they have moderated
+    moderated_reviews = relationship(
+        "Review", 
+        back_populates="moderator", 
+        foreign_keys="Review.moderator_id"
+    )
 
 class Category(Base):
     __tablename__ = "categories"
@@ -45,15 +64,12 @@ class Category(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(100), unique=True, index=True, nullable=False)
     icon = Column(String(50), nullable=True) 
-    
-    # Hierarchy Logic: Allows subcategories (e.g., Parent: Automotive -> Child: Battery Center)
     parent_id = Column(Integer, ForeignKey("categories.id"), nullable=True)
     
     subcategories = relationship(
         "Category", 
         backref=backref("parent", remote_side=[id])
     )
-
     businesses = relationship("Business", back_populates="category")
 
 class Business(Base):
@@ -63,17 +79,12 @@ class Business(Base):
     name = Column(String(255), nullable=False, index=True)
     slug = Column(String(255), unique=True, index=True)
     description = Column(Text, nullable=True)
-    
-    # --- UPDATED LOCATION LOGIC ---
     address = Column(String(255))
-    # Links to your 146 Cities table. No more manual typing!
     city_id = Column(Integer, ForeignKey("cities.id"), index=True)
-    
     phone = Column(String(20))
     email = Column(String(255))
     website = Column(String(255))
 
-    # BBB-Style Fields
     verification_status = Column(Enum(VerificationStatus), default=VerificationStatus.UNVERIFIED)
     is_accredited = Column(Boolean, default=False)
     trust_score = Column(Float, default=0.0)
@@ -82,24 +93,14 @@ class Business(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    # Foreign Keys
     category_id = Column(Integer, ForeignKey("categories.id"))
     owner_id = Column(Integer, ForeignKey("users.id"), nullable=True)
 
-    # Relationship Objects
-    # Access city/region via business.city.name or business.city.region
+    # --- RELATIONSHIP OBJECTS ---
     city = relationship("City", backref="businesses")
     category = relationship("Category", back_populates="businesses")
     owner = relationship("User", back_populates="owned_businesses")
     reviews = relationship("Review", back_populates="business", cascade="all, delete-orphan")
-    
-class ReviewStatus(enum.Enum):
-    PENDING = "pending"
-    APPROVED = "approved"
-    REJECTED = "rejected"
-    FLAGGED = "flagged"
-
-
 
 class Review(Base):
     __tablename__ = "reviews"
@@ -107,32 +108,37 @@ class Review(Base):
     id = Column(Integer, primary_key=True, index=True)
     rating = Column(Integer, nullable=False)
     comment = Column(Text, nullable=True)
-    
-    # BBB-style verification: Did they actually visit/buy?
     is_verified_purchase = Column(Boolean, default=False)
-    
-    # This is the field the Business Owner uses to respond to the review
     owner_reply = Column(Text, nullable=True)
-    owner_reply_at = Column(DateTime, nullable=True) # Track when the owner replied
+    owner_reply_at = Column(DateTime, nullable=True)
     
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    # Foreign Keys
     business_id = Column(Integer, ForeignKey("businesses.id", ondelete="CASCADE"), nullable=False)
-    # Changed to nullable=False to ensure all reviews are linked to a registered User
     user_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=False)
-    
-    # Snapshotted name so it remains even if the user changes their profile name later
     user_name = Column(String(100), nullable=False)
     
     status = Column(Enum(ReviewStatus), default=ReviewStatus.PENDING)
     moderated_at = Column(DateTime, nullable=True)
     moderator_id = Column(Integer, ForeignKey("users.id"), nullable=True)
 
-    # Relationships
+    # --- UPDATED RELATIONSHIPS ---
     business = relationship("Business", back_populates="reviews")
-    user = relationship("User", back_populates="reviews")
+    
+    # Specify which Foreign Key matches the 'user' (the author)
+    user = relationship(
+        "User", 
+        back_populates="reviews", 
+        foreign_keys=[user_id]
+    )
+    
+    # Specify which Foreign Key matches the 'moderator'
+    moderator = relationship(
+        "User", 
+        back_populates="moderated_reviews", 
+        foreign_keys=[moderator_id]
+    )
 
     __table_args__ = (
         CheckConstraint('rating >= 1 AND rating <= 5', name='check_rating_range'),

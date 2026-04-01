@@ -5,10 +5,6 @@ from sqlalchemy.orm import relationship
 from app.db.session import Base
 
 class UserRole(str, enum.Enum):
-    """
-    Using str as a mixin so the Enum is JSON serializable 
-    and works easily with your 'user_in.role == "owner"' checks.
-    """
     ADMIN = "admin"
     OWNER = "owner"
     CONSUMER = "consumer"
@@ -21,10 +17,8 @@ class User(Base):
     hashed_password = Column(String(255), nullable=False)
     full_name = Column(String(100), nullable=True)
     
-    # Using the Enum defined above
     role = Column(Enum(UserRole), default=UserRole.CONSUMER)
     
-    # BBB Logic: Useful for verifying reviewers or business owners
     is_identity_verified = Column(Boolean, default=False)
     is_active = Column(Boolean, default=True)
     
@@ -36,5 +30,11 @@ class User(Base):
     # If a user is an 'owner', they can have multiple businesses
     owned_businesses = relationship("Business", back_populates="owner")
     
-    # If a user is a 'consumer', they can leave many reviews
-    # reviews = relationship("Review", back_populates="user")
+    # FIX: Added 'foreign_keys' to resolve the AmbiguousForeignKeysError.
+    # Replace "Review.user_id" with the actual column name in your Review model 
+    # that represents the person writing the review.
+    reviews = relationship(
+        "Review", 
+        back_populates="user", 
+        foreign_keys="Review.user_id" 
+    )
