@@ -92,6 +92,14 @@ class Business(Base):
     category = relationship("Category", back_populates="businesses")
     owner = relationship("User", back_populates="owned_businesses")
     reviews = relationship("Review", back_populates="business", cascade="all, delete-orphan")
+    
+class ReviewStatus(enum.Enum):
+    PENDING = "pending"
+    APPROVED = "approved"
+    REJECTED = "rejected"
+    FLAGGED = "flagged"
+
+
 
 class Review(Base):
     __tablename__ = "reviews"
@@ -100,15 +108,27 @@ class Review(Base):
     rating = Column(Integer, nullable=False)
     comment = Column(Text, nullable=True)
     
+    # BBB-style verification: Did they actually visit/buy?
     is_verified_purchase = Column(Boolean, default=False)
+    
+    # This is the field the Business Owner uses to respond to the review
     owner_reply = Column(Text, nullable=True)
+    owner_reply_at = Column(DateTime, nullable=True) # Track when the owner replied
     
     created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     # Foreign Keys
     business_id = Column(Integer, ForeignKey("businesses.id", ondelete="CASCADE"), nullable=False)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    # Changed to nullable=False to ensure all reviews are linked to a registered User
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=False)
+    
+    # Snapshotted name so it remains even if the user changes their profile name later
     user_name = Column(String(100), nullable=False)
+    
+    status = Column(Enum(ReviewStatus), default=ReviewStatus.PENDING)
+    moderated_at = Column(DateTime, nullable=True)
+    moderator_id = Column(Integer, ForeignKey("users.id"), nullable=True)
 
     # Relationships
     business = relationship("Business", back_populates="reviews")
