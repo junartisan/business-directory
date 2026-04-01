@@ -20,7 +20,10 @@ class User(Base):
     role = Column(Enum(UserRole), default=UserRole.CONSUMER)
     
     is_identity_verified = Column(Boolean, default=False)
-    is_active = Column(Boolean, default=True)
+    is_active = Column(Boolean, default=False)  # User is "locked" until verified
+    email_verified = Column(Boolean, default=False)
+    verified_at = Column(DateTime, nullable=True)
+    
     
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

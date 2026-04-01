@@ -21,3 +21,8 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 
 def get_password_hash(password: str) -> str:
     return pwd_context.hash(password)
+
+def create_verification_token(email: str):
+    expire = datetime.utcnow() + timedelta(hours=24)
+    to_encode = {"exp": expire, "sub": email}
+    return jwt.encode(to_encode, "YOUR_SECRET_KEY", algorithm="HS256")
