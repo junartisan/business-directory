@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Query, HTTPException, status
+from fastapi import APIRouter, Depends, Query, HTTPException, status, File
 from sqlalchemy.orm import Session
 from typing import List
 from datetime import datetime
@@ -6,6 +6,7 @@ from app.db.session import get_db
 from app.models.business import Business, VerificationStatus, User, UserRole, Review, ReviewStatus
 from app.schemas.business import BusinessCreate, BusinessOut, BusinessUpdate, BusinessSummaryOut
 from app.dependencies import get_current_user # To identify the owner
+from app.utils.uploads import save_upload_file
 
 
 router = APIRouter(prefix="/businesses", tags=["Directory"])
@@ -181,3 +182,15 @@ def get_business_by_slug(slug: str, db: Session = Depends(get_db)):
     business.reviews = approved_reviews
     
     return business
+
+@router.post("/businesses/{business_id}/logo")
+async def upload_business_logo(business_id: int, file: UploadFile = File(...)):
+    # Save the file to disk using our utility
+    file_url = save_upload_file(file, folder="logos")
+    
+    # Now update your SQLAlchemy model
+    # business = db.query(Business).filter(Business.id == business_id).first()
+    # business.logo_url = file_url
+    # db.commit()
+    
+    return {"logo_url": file_url}

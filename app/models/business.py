@@ -122,6 +122,9 @@ class Review(Base):
     status = Column(Enum(ReviewStatus), default=ReviewStatus.PENDING)
     moderated_at = Column(DateTime, nullable=True)
     moderator_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    
+    logo_url = Column(String(255), nullable=True)  # Store path like "/static/uploads/logos/sm_mall.png"
+    banner_url = Column(String(255), nullable=True)
 
     # --- UPDATED RELATIONSHIPS ---
     business = relationship("Business", back_populates="reviews")

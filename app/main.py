@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from app.routers import businesses, auth, search
 from app.db.session import engine, Base
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 # This name MUST match the "app" in your uvicorn command (app.main:app)
 app = FastAPI(title="Philippine Cities Online Directory")
@@ -27,3 +28,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# This tells FastAPI: "If someone goes to /static, show them files in the 'static' folder"
+app.mount("/static", StaticFiles(directory="static"), name="static")
