@@ -5,7 +5,8 @@ from sqlalchemy import pool
 from alembic import context
 
 # 1. Import your existing connection and Base
-from app.db.session import DATABASE_URL, engine, Base
+from app.db.session import SQLALCHEMY_DATABASE_URL as DATABASE_URL, engine
+from app.db.base_class import Base
 # Ensure all models are imported so Alembic "sees" the tables
 from app.models.business import Business, Category 
 

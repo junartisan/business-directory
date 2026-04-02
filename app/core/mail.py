@@ -7,8 +7,8 @@ conf = ConnectionConfig(
     MAIL_FROM = "admin@philippinescities.com",
     MAIL_PORT = 465,
     MAIL_SERVER = "mail.supremecluster.com",
-    MAIL_STARTTLS = True,
-    MAIL_SSL_TLS = False,
+    MAIL_STARTTLS = False,
+    MAIL_SSL_TLS = True,
     USE_CREDENTIALS = True,
     VALIDATE_CERTS = True
 )

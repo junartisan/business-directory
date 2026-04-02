@@ -2,7 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from datetime import datetime
 from app.db.session import get_db
-from app.models.business import Business, Review, User
+from app.models.business import Business, Review
+from app.models.user import User
 from app.schemas.review import ReviewCreate, ReviewOut # Assuming these exist
 from app.auth.deps import get_current_user 
 from app.utils.scoring import calculate_trust_score

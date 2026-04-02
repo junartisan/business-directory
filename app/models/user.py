@@ -2,12 +2,14 @@ import enum
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, Enum
 from sqlalchemy.orm import relationship
-from app.db.session import Base
+from app.db.base_class import Base
+
 
 class UserRole(str, enum.Enum):
-    ADMIN = "admin"
-    OWNER = "owner"
     CONSUMER = "consumer"
+    OWNER = "owner"
+    ADMIN = "admin"
+    
 
 class User(Base):
     __tablename__ = "users"
@@ -15,29 +17,30 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String(255), unique=True, index=True, nullable=False)
     hashed_password = Column(String(255), nullable=False)
-    full_name = Column(String(100), nullable=True)
-    
+    full_name = Column(String(100))
     role = Column(Enum(UserRole), default=UserRole.CONSUMER)
     
-    is_identity_verified = Column(Boolean, default=False)
-    is_active = Column(Boolean, default=False)  # User is "locked" until verified
     email_verified = Column(Boolean, default=False)
-    verified_at = Column(DateTime, nullable=True)
-    
+    is_identity_verified = Column(Boolean, default=False)
+    is_active = Column(Boolean, default=True) 
+    deleted_at = Column(DateTime, nullable=True) 
     
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    # --- RELATIONSHIPS ---
-    
-    # If a user is an 'owner', they can have multiple businesses
+    # --- UPDATED RELATIONSHIPS ---
     owned_businesses = relationship("Business", back_populates="owner")
     
-    # FIX: Added 'foreign_keys' to resolve the AmbiguousForeignKeysError.
-    # Replace "Review.user_id" with the actual column name in your Review model 
-    # that represents the person writing the review.
+    # We specify foreign_keys here so SQLAlchemy knows which ID connects a user to their reviews
     reviews = relationship(
         "Review", 
         back_populates="user", 
-        foreign_keys="Review.user_id" 
+        foreign_keys="Review.user_id"
+    )
+    
+    # New relationship for admins to see what they have moderated
+    moderated_reviews = relationship(
+        "Review", 
+        back_populates="moderator", 
+        foreign_keys="Review.moderator_id"
     )

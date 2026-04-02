@@ -2,7 +2,8 @@ import enum
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Enum, Float, Text, CheckConstraint
 from sqlalchemy.orm import relationship, backref
-from app.db.session import Base
+from app.db.base_class import Base
+from .user import User, UserRole
 
 # --- ENUMS ---
 
@@ -12,11 +13,6 @@ class VerificationStatus(enum.Enum):
     VERIFIED = "verified"
     SUSPENDED = "suspended"
 
-class UserRole(str, enum.Enum):
-    CONSUMER = "consumer"
-    OWNER = "owner"
-    ADMIN = "admin"
-
 class ReviewStatus(enum.Enum):
     PENDING = "pending"
     APPROVED = "approved"
@@ -24,39 +20,6 @@ class ReviewStatus(enum.Enum):
     FLAGGED = "flagged"
 
 # --- MODELS ---
-
-class User(Base):
-    __tablename__ = "users"
-
-    id = Column(Integer, primary_key=True, index=True)
-    email = Column(String(255), unique=True, index=True, nullable=False)
-    hashed_password = Column(String(255), nullable=False)
-    full_name = Column(String(100))
-    role = Column(Enum(UserRole), default=UserRole.CONSUMER)
-    
-    is_identity_verified = Column(Boolean, default=False)
-    is_active = Column(Boolean, default=True) 
-    deleted_at = Column(DateTime, nullable=True) 
-    
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
-    # --- UPDATED RELATIONSHIPS ---
-    owned_businesses = relationship("Business", back_populates="owner")
-    
-    # We specify foreign_keys here so SQLAlchemy knows which ID connects a user to their reviews
-    reviews = relationship(
-        "Review", 
-        back_populates="user", 
-        foreign_keys="Review.user_id"
-    )
-    
-    # New relationship for admins to see what they have moderated
-    moderated_reviews = relationship(
-        "Review", 
-        back_populates="moderator", 
-        foreign_keys="Review.moderator_id"
-    )
 
 class Category(Base):
     __tablename__ = "categories"

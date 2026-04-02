@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.routers import businesses, auth, search
-from app.db.session import engine, Base
+from app.db.session import engine
+from app.db.base_class import Base
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 

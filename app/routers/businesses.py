@@ -3,7 +3,8 @@ from sqlalchemy.orm import Session
 from typing import List
 from datetime import datetime
 from app.db.session import get_db
-from app.models.business import Business, VerificationStatus, User, UserRole, Review, ReviewStatus
+from app.models.business import Business, VerificationStatus, Review, ReviewStatus
+from app.models.user import User, UserRole
 from app.schemas.business import BusinessCreate, BusinessOut, BusinessUpdate, BusinessSummaryOut
 from app.dependencies import get_current_user # To identify the owner
 from app.utils.uploads import save_upload_file
